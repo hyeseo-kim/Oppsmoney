@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: commonHead">
+    <style>
+        .info-title {
+            font-size: 10px;
+            color: #333;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body class="index-page">
+<header id="header" class="header sticky-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4 flex-wrap">
+        <a th:href="@{/dashboard}" class="logo d-flex align-items-center order-1 order-md-0">
+            <h1 class="sitename">Oops</h1><span>.</span>
+        </a>
+        <div class="d-flex flex-row-reverse align-items-center gap-3 order-0 order-md-1">
+            <th:block th:replace="fragments/sidebar :: sidebar"></th:block>
+            <a th:href="@{/subscriptions/register}" class="btn-getstarted">구독등록</a>
+        </div>
+    </div>
+</header>
+
+<main class="main">
+    <!-- 질문 등록 및 목록 -->
+    <section class="container py-5" style="min-height: 60vh;">
+        <div class="section-title text-center" data-aos="fade-up">
+            <h2>🫟 고객 지원</h2>
+            <p>궁금한 점과 안내사항을 <strong>OopsMoney</strong>에 자유롭게 물어보세요!</p>
+        </div>
+
+        <!-- 질문 등록 폼 -->
+        <div class="card shadow-sm p-4 mb-4">
+            <form th:action="@{/users/support/submit}" method="post">
+                <div class="mb-3">
+                    <input type="text" name="title" class="form-control" placeholder="제목을 입력해주세요" required>
+                </div>
+                <div class="mb-3">
+                    <textarea name="question" rows="4" class="form-control" placeholder="질문을 입력해주세요" required></textarea>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">질문 등록</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 질문 목록 -->
+        <div class="card shadow-sm p-4">
+            <div class="accordion" id="questionAccordion">
+                <div th:each="inquiry, iterStat : ${inquiries}" class="accordion-item">
+                    <h2 class="accordion-header" th:attr="id='heading' + ${iterStat.index}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                th:attr="data-bs-target='#collapse' + ${iterStat.index}"
+                                aria-expanded="false"
+                                th:attrappend="aria-controls='collapse' + ${iterStat.index}">
+                            <i class="bi bi-question-circle me-2 text-primary"></i>
+                            <span th:text="${inquiry.title}">질문 제목</span>
+                        </button>
+                    </h2>
+                    <div th:attr="id='collapse' + ${iterStat.index}"
+                         class="accordion-collapse collapse"
+                         th:attrappend="aria-labelledby='heading' + ${iterStat.index}"
+                         data-bs-parent="#questionAccordion">
+                        <div class="accordion-body d-flex flex-column gap-2">
+                            <p><span th:text="${inquiry.question}">질문 내용</span></p>
+                            <p><strong>관리자:</strong> <span th:text="${inquiry.answer != null ? inquiry.answer : '❗ 아직 답변 대기 중입니다.'}"></span></p>
+
+                            <!-- 아래로 이동된 삭제 버튼과 작성일 -->
+                            <div class="d-flex justify-content-between align-items-center mt-4">
+                                <p class="text-muted small mb-0" th:text="'작성일: ' + ${#temporals.format(inquiry.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+                                <form th:action="@{/users/support/delete/{id}(id=${inquiry.id})}" method="post" class="mb-0">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('정말 삭제하시겠습니까?')">
+                                        <i class="bi bi-trash"></i> 질문 삭제
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(inquiries)}" class="text-muted text-center mt-3">
+                등록된 질문이 없습니다.
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FAQ 섹션 -->
+    <section id="faq" class="faq section" style="margin-top: 0; padding-top: 20px;">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-12">
+                    <div class="faq-container px-3" data-aos="fade-up" data-aos-delay="200">
+
+                        <div class="faq-item faq-active">
+                            <i class="faq-icon bi bi-question-circle"></i>
+                            <h3>알림은 언제 전송되나요?</h3>
+                            <div class="faq-content">
+                                <p>설정한 결제일에서 선택한 '며칠 전' 오전 9시에 메일로 자동 발송됩니다.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item faq-active">
+                            <i class="faq-icon bi bi-question-circle"></i>
+                            <h3>알림이 너무 자주 와요. 끌 수 있나요?</h3>
+                            <div class="faq-content">
+                                <p>구독 상세 페이지에서 알림 기능을 끄거나 알림 주기를 조정하실 수 있습니다.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item faq-active">
+                            <i class="faq-icon bi bi-question-circle"></i>
+                            <h3>알림은 어디로 전송되나요?</h3>
+                            <div class="faq-content">
+                                <p>가입 당시 입력했던 G-mail 계정으로 전송되며, 기타 계정의 경우 전송에 실패할 수 있습니다.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item">
+                            <i class="faq-icon bi bi-question-circle"></i>
+                            <h3>다음달에도 사용할 예정인가요?</h3>
+                            <div class="faq-content">
+                                <p>체크하지 않으면 이번 달만 알림이 발송되며, 체크 시 다음 달에도 같은 날짜에 전송됩니다. 결제일 변경은 마이페이지에서 가능해요.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item">
+                            <i class="faq-icon bi bi-question-circle"></i>
+                            <h3>결제일이 바뀌면 어떻게 하나요?</h3>
+                            <div class="faq-content">
+                                <p>'마이페이지 > 구독 수정'에서 새로운 결제일로 변경하실 수 있습니다. 변경된 정보는 다음 알림부터 반영됩니다.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                        <div class="faq-item">
+                            <i class="faq-icon bi bi-question-circle"></i>
+                            <h3>같은 서비스를 중복으로 등록해도 되나요?</h3>
+                            <div class="faq-content">
+                                <p>가능합니다. 예를 들어 가족 계정과 본인 계정을 따로 관리하고 싶을 경우 각각 등록하시면 됩니다.</p>
+                            </div>
+                            <i class="faq-toggle bi bi-chevron-right"></i>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
+<div id="preloader"></div>
+<div th:replace="fragments/footer :: commonFooter"></div>
+</body>
+</html>

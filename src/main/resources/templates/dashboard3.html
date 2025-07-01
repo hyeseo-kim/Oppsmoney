@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: commonHead"></head>
+  <meta charset="UTF-8">
+  <title>대시보드</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .subscription-list { margin-top: 20px; }
+    .subscription-item { border-bottom: 1px solid #ccc; padding: 10px 0; }
+    .add-button, .edit-button { margin-top: 10px; padding: 5px 10px; font-size: 16px; }
+    .notification-link { margin-top: 40px; font-size: 14px; color: #666; }
+  </style>
+  <script>
+    function toggleDeleteMode() {
+      const checkboxes = document.querySelectorAll('.delete-checkbox');
+      const deleteBtn = document.getElementById('delete-selected-btn');
+      checkboxes.forEach(cb => cb.style.display = cb.style.display === 'inline' ? 'none' : 'inline');
+      deleteBtn.style.display = deleteBtn.style.display === 'inline' ? 'none' : 'inline';
+    }
+
+    function toggleComparisonChart() {
+      const chartDiv = document.getElementById('comparisonChartWrapper');
+      chartDiv.style.display = chartDiv.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+<body>
+<h2 th:text="'환영합니다, ' + ${session.userNickname} + '님!'"></h2>
+
+<div class="subscription-list">
+  <div th:if="${subscriptions.size() == 0}">
+    <p>구독 목록 없음</p>
+  </div>
+
+  <div>
+    <h3>📊 이번 달 총 구독 금액: <span th:text="${totalAmount}">0</span>원</h3>
+    <h4>카테고리별 합계</h4>
+    <ul>
+      <li th:each="entry : ${categoryTotals}">
+        <span th:text="${entry.key}">카테고리</span>: <span th:text="${entry.value}">0</span>원
+      </li>
+    </ul>
+
+    <!-- ✅ 차트 2개 가로 배치 -->
+    <div style="display: flex; gap: 30px; margin-top: 30px;">
+      <div style="width: 400px; height: 300px;">
+        <h4 style="text-align: center;">📊 가장 많이 사용하는 카테고리</h4>
+        <canvas id="categoryChart"></canvas>
+      </div>
+
+      <div style="width: 400px; height: 300px;">
+        <h4 style="text-align: center;">🥧 가장 많은 비용을 차지하는 카테고리</h4>
+        <canvas id="categoryPieChart"></canvas>
+      </div>
+    </div>
+
+    <!-- ✅ 📉 비교 버튼 및 그래프 -->
+    <button onclick="toggleComparisonChart()" style="margin-top: 30px;">📉 지난달 vs 이번달 비교 보기</button>
+    <div id="comparisonChartWrapper" style="display: none; margin-top: 10px;">
+      <h4>📉 이번 달 vs 지난 달 비교</h4>
+      <canvas id="monthlyComparisonChart" width="400" height="200"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      document.addEventListener('DOMContentLoaded', function () {
+        const categoryData = /*[[${categoryTotals}]]*/ {};
+        const labels = Object.keys(categoryData);
+        const data = Object.values(categoryData);
+
+        const ctxBar = document.getElementById('categoryChart').getContext('2d');
+        new Chart(ctxBar, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '구독 금액 (₩)',
+              data: data,
+              backgroundColor: 'rgba(75, 192, 192, 0.5)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+
+        const ctxPie = document.getElementById('categoryPieChart').getContext('2d');
+        new Chart(ctxPie, {
+          type: 'pie',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '비용 비율',
+              data: data,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 159, 64, 0.6)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: false,
+            maintainAspectRatio: false
+          }
+        });
+
+        const monthlyComparisonData = /*[[${monthlyComparison}]]*/ {};
+        const months = Object.keys(monthlyComparisonData);
+        const values = Object.values(monthlyComparisonData);
+
+        const ctxLine = document.getElementById('monthlyComparisonChart').getContext('2d');
+        new Chart(ctxLine, {
+          type: 'line',
+          data: {
+            labels: months,
+            datasets: [{
+              label: '총 구독 금액 비교 (₩)',
+              data: values,
+              borderColor: 'rgba(54, 162, 235, 1)',
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+          }
+        });
+      });
+      /*]]>*/
+    </script>
+  </div>
+
+  <!-- ✅ 구독 목록 -->
+  <!-- ✅ 구독 목록 출력 (정돈된 테이블) -->
+  <form th:action="@{/subscriptions/delete-many}" method="post">
+    <div th:if="${subscriptions.size() > 0}">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead style="background-color: #f0f0f0; text-align: left;">
+        <tr>
+          <th style="padding: 8px;">서비스명</th>
+          <th style="padding: 8px;">결제일</th>
+          <th style="padding: 8px;">금액(₩)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sub : ${subscriptions}" style="border-bottom: 1px solid #ccc;">
+          <td style="padding: 8px;" th:text="${sub.service_name}">서비스명</td>
+          <td style="padding: 8px;" th:text="${sub.payment_day}">결제일</td>
+          <td style="padding: 8px;">
+            <span th:text="${sub.amount}">금액</span> 원
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 10px;">
+      <button type="button" class="edit-button" onclick="toggleDeleteMode()">수정</button>
+      <button type="submit" id="delete-selected-btn" style="display: none;">선택 삭제</button>
+    </div>
+  </form>
+
+
+
+  <form th:action="@{/subscriptions/register}" method="get">
+    <button type="submit" class="add-button">+ 구독 추가</button>
+  </form>
+</div>
+
+<a th:href="@{/notifications}">
+  🔔 알림 보기
+  <span th:if="${unreadCount > 0}" th:text="'(' + ${unreadCount} + ')'"> </span>
+</a>
+
+<div class="notification-link">
+  <a th:href="@{/mypage}">🙋 마이페이지</a>
+</div>
+
+<form th:action="@{/users/logout}" method="post">
+  <button type="submit">로그아웃</button>
+</form>
+</body>
+</html>

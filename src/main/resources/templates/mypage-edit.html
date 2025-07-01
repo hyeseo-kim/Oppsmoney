@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: commonHead"></head>
+<body class="index-page">
+
+<header id="header" class="header sticky-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4 flex-wrap">
+
+        <a th:href="@{/dashboard}" class="logo d-flex align-items-center order-1 order-md-0">
+            <h1 class="sitename">Oops</h1><span>.</span>
+        </a>
+
+        <div class="d-flex flex-row-reverse align-items-center gap-3 order-0 order-md-1">
+            <th:block th:replace="fragments/sidebar :: sidebar"></th:block>
+            <a th:href="@{/subscriptions/register}" class="btn-getstarted">구독등록</a>
+        </div>
+    </div>
+</header>
+
+<main class="main">
+    <section class="container d-flex justify-content-center align-items-center py-5" style="min-height: 80vh;">
+        <div style="width: 100%; max-width: 420px;">
+
+            <div class="section-title text-center" data-aos="fade-up">
+                <h2>🔔 내 정보 수정</h2>
+            </div>
+<!--            <div class="text-center mb-4">-->
+<!--                <h2>정보 수정</h2>-->
+<!--            </div>-->
+
+            <!-- 닉네임 변경 -->
+            <form th:action="@{/mypage/update-nickname}" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="nickname" name="nickname" placeholder="새 닉네임" required>
+                </div>
+                <div class="d-grid mt-2">
+                    <button type="submit" class="btn btn-block" style="background-color: #17b5b5; color: white;">닉네임 변경</button>
+                </div>
+            </form>
+
+            <hr class="my-4">
+
+            <!-- 비밀번호 변경 -->
+            <form th:action="@{/mypage/update-password}" method="post">
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호" required>
+                </div>
+
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="새 비밀번호" required>
+                </div>
+
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="새 비밀번호 확인" required>
+                </div>
+
+                <div class="d-grid mt-3">
+                    <button type="submit" class="btn btn-block" style="background-color: #007bff; color: white;">비밀번호 변경</button>
+                </div>
+            </form>
+
+            <!-- 메시지 출력 -->
+            <div class="mt-4">
+                <p th:if="${error}" class="text-danger text-center" th:text="${error}"></p>
+                <p th:if="${message}" class="text-success text-center" th:text="${message}"></p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="fragments/footer :: commonFooter"></div>
+</body>
+</html>

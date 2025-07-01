@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: commonHead">
+    <title>내 알림 목록</title>
+</head>
+
+<body class="index-page">
+<header id="header" class="header sticky-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4 flex-wrap">
+        <a th:href="@{/dashboard}" class="logo d-flex align-items-center order-1 order-md-0">
+            <h1 class="sitename">Oops</h1><span>.</span>
+        </a>
+        <div class="d-flex flex-row-reverse align-items-center gap-3 order-0 order-md-1">
+            <th:block th:replace="fragments/sidebar :: sidebar"></th:block>
+            <a th:href="@{/subscriptions/register}" class="btn-getstarted">구독등록</a>
+        </div>
+    </div>
+</header>
+
+<main class="main">
+    <section class="section">
+        <div class="container">
+            <div class="section-title text-center" data-aos="fade-up">
+                <h2>🔔 내 알림 목록</h2>
+                <p>유료 버전에 가입하고 기존보다 더 많은 Oops 기능을 체험해보세요!</p>
+            </div>
+
+            <div th:if="${notifications.size() == 0}" class="text-center my-5">
+                <p>📭 알림이 없습니다.</p>
+            </div>
+
+            <div th:if="${notifications.size() > 0}">
+                <!-- ✅ 일괄 처리용 form -->
+                <form method="post" th:action="@{/notifications/read-many}" id="bulkForm">
+                    <div class="row gy-4">
+                        <div class="col-xl-4 col-md-6" th:each="noti : ${notifications}" data-aos="fade-up" data-aos-delay="100">
+                            <article class="position-relative p-3 shadow-sm rounded"
+                                     th:classappend="${noti.read} ? 'bg-light' : 'bg-white'">
+                                <!-- ✅ 체크박스 -->
+                                <input type="checkbox" name="ids" th:value="${noti.notification_id}"
+                                       style="position: absolute; top: 10px; left: 10px; width: 18px; height: 18px;">
+
+                                <div class="post-img mb-3">
+                                    <img src="@{/assets/img/blog/blog-1.jpg}" alt="" class="img-fluid rounded">
+                                </div>
+
+                                <h3 th:text="${noti.subscription.service_name}">서비스명</h3>
+                                <p class="small text-muted" th:text="${#temporals.format(noti.notification_date, 'yyyy-MM-dd HH:mm')}">날짜</p>
+                                <p th:text="${noti.read ? '✅ 읽음' : '📩 안읽음'}"></p>
+
+                                <!-- ✅ 개별 삭제: JS로 처리 -->
+                                <button type="button" class="btn btn-sm btn-outline-danger mt-2"
+                                        th:onclick="'deleteNotification(' + ${noti.notification_id} + ')'">
+                                    🗑️ 삭제
+                                </button>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-3 justify-content-center mt-4">
+                        <!-- ✅ 선택 읽음 처리 -->
+                        <button type="submit" class="btn btn-success"
+                                onclick="document.getElementById('bulkForm').action='/notifications/read-many'">
+                            ✅ 선택 알림 읽음 처리
+                        </button>
+
+                        <!-- ✅ 선택 삭제 -->
+                        <button type="submit" class="btn btn-danger"
+                                onclick="document.getElementById('bulkForm').action='/notifications/delete-many'">
+                            🗑️ 선택 알림 삭제
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
+<div id="preloader"></div>
+<div th:replace="fragments/footer :: commonFooter"></div>
+
+<!-- ✅ 개별 삭제용 JS -->
+<script>
+    function deleteNotification(id) {
+        if (!confirm("정말 삭제하시겠습니까?")) return;
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/notifications/${id}/delete`;
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+</body>
+</html>

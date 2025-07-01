@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: commonHead">
+  <style>
+    /* 사이드바 열렸을 때 main 오른쪽으로 밀어내기 */
+    body.sidebar-open main {
+      margin-right: 320px;
+      transition: margin-right 0.3s ease;
+    }
+
+    /* 모바일에서는 겹쳐도 되므로 margin 제거 */
+    @media (max-width: 992px) {
+      body.sidebar-open main {
+        margin-right: 0;
+      }
+    }
+
+    /* 테이블 반응형 대응 */
+    @media (max-width: 768px) {
+      table {
+        font-size: 14px;
+      }
+      th, td {
+        white-space: nowrap;
+      }
+    }
+
+    /* 테이블 가로 스크롤 대응 */
+    .table-responsive {
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body class="index-page">
+<header id="header" class="header sticky-top">
+  <div class="container-fluid d-flex justify-content-between align-items-center px-4 flex-wrap">
+    <a th:href="@{/dashboard}" class="logo d-flex align-items-center order-1 order-md-0">
+      <h1 class="sitename">Oops</h1><span>.</span>
+    </a>
+    <div class="d-flex flex-row-reverse align-items-center gap-3 order-0 order-md-1">
+      <th:block th:replace="fragments/sidebar :: sidebar"></th:block>
+      <a th:href="@{/subscriptions/register}" class="btn-getstarted">구독등록</a>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <section class="container-fluid py-5" style="min-height: 80vh;">
+    <div class="section-title text-center" data-aos="fade-up">
+      <h2>📦 내 구독 수정</h2>
+    </div>
+
+    <form th:action="@{/subscriptions/manage}" method="post">
+      <div class="row justify-content-center mt-4">
+        <div class="col-12 col-md-10">
+
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center w-100" style="min-width: 720px;">
+              <thead class="table-light">
+              <tr>
+                <th>서비스명</th>
+                <th>결제일</th>
+                <th>결제 전 알림</th>
+                <th>금액</th>
+                <th>다음달 사용</th>
+                <th>알림 여부</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="subscription : ${subscriptions}">
+                <td>
+                  <span th:text="${subscription.service_name}">넷플릭스</span>
+                  <input type="hidden" name="subscriptionIds" th:value="${subscription.subscriptionId}"/>
+                </td>
+                <td>
+                  <input type="date" class="form-control" name="payment_days"
+                         th:value="${subscription.payment_day}"/>
+                </td>
+                <td>
+                  <select class="form-select" name="alarm_days_befores">
+                    <option th:selected="${subscription.alarm_days_before == 1}" value="1">1일 전</option>
+                    <option th:selected="${subscription.alarm_days_before == 3}" value="3">3일 전</option>
+                    <option th:selected="${subscription.alarm_days_before == 7}" value="7">7일 전</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="number" class="form-control" name="amounts"
+                         th:value="${subscription.amount}" min="0"/>
+                </td>
+                <td>
+                  <select class="form-select" name="next_month_uses">
+                    <option th:selected="${subscription.next_month_use}" value="true">사용</option>
+                    <option th:selected="${!subscription.next_month_use}" value="false">미사용</option>
+                  </select>
+                </td>
+                <td>
+                  <select class="form-select" name="alarmEnableds">
+                    <option th:selected="${subscription.alarmEnabled}" value="true">ON</option>
+                    <option th:selected="${!subscription.alarmEnabled}" value="false">OFF</option>
+                  </select>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-grid mt-3">
+            <button type="submit" class="btn btn-block" style="background-color: #17b5b5; color: white;">저장하기</button>
+          </div>
+
+        </div>
+      </div>
+    </form>
+
+    <!-- 메시지 출력 -->
+    <div class="mt-4 text-center">
+      <p th:if="${error}" class="text-danger" th:text="${error}"></p>
+      <p th:if="${message}" class="text-success" th:text="${message}"></p>
+    </div>
+  </section>
+</main>
+
+<div th:replace="fragments/footer :: commonFooter"></div>
+</body>
+</html>

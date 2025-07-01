@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: commonHead">
+    <style>
+        .info-title {
+            font-size: 10px;
+            color: #333;
+            text-align: left;
+            margin: 0;
+            padding: 0;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body class="index-page">
+<header id="header" class="header sticky-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4 flex-wrap">
+
+        <a th:href="@{/admin/dashboard}" class="logo d-flex align-items-center order-1 order-md-0">
+            <h1 class="sitename">Oops</h1><span>.</span>
+        </a>
+
+        <div class="d-flex flex-row-reverse align-items-center gap-3 order-0 order-md-1">
+            <a th:href="@{/}" class="btn-getstarted">로그아웃</a>
+        </div>
+    </div>
+</header>
+
+<main class="main">
+    <section class="container-fluid py-5">
+        <div class="text-center mb-4">
+            <h2>📬 협업 제안 목록</h2>
+            <p class="text-muted">OopsMoney에 접수된 제안들을 확인하세요</p>
+        </div>
+
+        <div class="card shadow-sm p-4">
+            <div class="accordion" id="proposalAccordion">
+                <div th:each="proposal, iterStat : ${proposals}" class="accordion-item">
+                    <h2 class="accordion-header" th:attr="id='proposalHeading' + ${iterStat.index}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                th:attr="data-bs-target='#proposalCollapse' + ${iterStat.index}"
+                                aria-expanded="false"
+                                th:attrappend="aria-controls='proposalCollapse' + ${iterStat.index}">
+                            <i class="bi bi-envelope-paper-fill me-2 text-primary"></i>
+                            <span th:text="${proposal.title}">협업 제안 제목</span>
+                        </button>
+                    </h2>
+
+                    <!-- ✅ 이 부분이 누락되었었음! -->
+                    <div th:attr="id='proposalCollapse' + ${iterStat.index}"
+                         class="accordion-collapse collapse"
+                         th:attrappend="aria-labelledby='proposalHeading' + ${iterStat.index}"
+                         data-bs-parent="#proposalAccordion">
+
+                        <div class="accordion-body">
+                            <p><strong>제안자:</strong> <span th:text="${proposal.name}">이름</span></p>
+                            <p><strong>이메일:</strong> <span th:text="${proposal.email}">이메일</span></p>
+                            <p><strong>내용:</strong> <span th:text="${proposal.content}">내용</span></p>
+
+                            <!-- ✅ 제안일 + 삭제버튼 -->
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <p class="text-muted small mb-0"
+                                   th:text="'제안일: ' + ${#temporals.format(proposal.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+                                <form th:action="@{'/admin/proposals/' + ${proposal.id} + '/delete'}" method="post" class="mb-0">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(proposals)}" class="text-muted text-center mt-3">
+                등록된 협업 제안이 없습니다.
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
+<div id="preloader"></div>
+<div th:replace="fragments/footer :: commonFooter"></div>
+</body>
+</html>

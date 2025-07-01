@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: commonHead">
+    <title>구독 등록</title>
+</head>
+
+<body class="index-page">
+<header id="header" class="header sticky-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4 flex-wrap">
+
+        <a th:href="@{/dashboard}" class="logo d-flex align-items-center order-1 order-md-0">
+            <h1 class="sitename">Oops</h1><span>.</span>
+        </a>
+
+        <div class="d-flex flex-row-reverse align-items-center gap-3 order-0 order-md-1">
+            <th:block th:replace="fragments/sidebar :: sidebar"></th:block>
+            <a th:href="@{/subscriptions/register}" class="btn-getstarted">구독등록</a>
+        </div>
+    </div>
+</header>
+
+<main class="main">
+
+    <!-- ✅ form: 화면 가운데 정렬 -->
+    <section class="container d-flex justify-content-center align-items-center py-5" style="min-height: 60vh; margin-bottom: 10px;">
+
+    <div style="width: 100%; max-width: 420px;">
+            <h2 class="text-center mb-4">📥 구독 등록</h2>
+            <form th:action="@{/subscriptions/register}" method="post">
+                <div class="mb-3">
+                    <label>카테고리:</label>
+                    <select id="mainCategory" name="category" onchange="updateSubcategoryOptions()" class="form-select">
+                        <option value="스트리밍">스트리밍</option>
+                        <option value="음악">음악</option>
+                        <option value="전자책">전자책</option>
+                        <option value="쇼핑">쇼핑</option>
+                        <option value="생산성">생산성</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>서비스명:</label>
+                    <select id="subcategory" onchange="updateServiceName()" class="form-select"></select>
+                </div>
+
+                <div id="customInputWrapper" style="display:none;" class="mb-3">
+                    <label>서비스명 직접입력:</label>
+                    <input type="text" id="serviceInputCustom" class="form-control" oninput="document.getElementById('serviceInput').value = this.value">
+                </div>
+
+                <input type="hidden" name="service_name" id="serviceInput" required>
+
+                <div class="mb-3">
+                    <label>금액(₩):</label>
+                    <input type="number" name="amount" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>결제일:</label>
+                    <input type="date" name="payment_day" class="form-control" required>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" name="alarmEnabled" id="alarmEnabled" checked onchange="toggleAlarmDaysInput()">
+                    <label class="form-check-label" for="alarmEnabled">알림 받기</label>
+                </div>
+
+                <div id="alarmDaysWrapper" class="mb-3">
+                    <label>며칠 전에 알림 받을까요?</label>
+                    <input type="number" name="alarm_days_before" value="3" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label>다음달에도 사용할 예정인가요?</label>
+                    <input type="checkbox" name="next_month_use">
+                </div>
+
+                <div class="mb-3">
+                    <label>메모:</label>
+                    <textarea name="memo" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="d-grid mt-3">
+                    <button type="submit" class="btn btn-block" style="background-color: #17b5b5; color: white;">등록하기</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+
+<script>
+    const subcategories = {
+        '스트리밍': ['넷플릭스', '디즈니+', '티빙', '왓챠', '쿠팡플레이', '웨이브', '라프텔', '애플TV+', '유튜브 프리미엄', '직접입력'],
+        '음악': ['멜론', '지니뮤직', '벅스', '스포티파이', '유튜브뮤직', '애플뮤직', 'Amazon Music', '직접입력'],
+        '전자책': ['리디북스', '밀리의서재', 'YES24 북클럽', '교보 Sam', 'Audible', '직접입력'],
+        '쇼핑': ['쿠팡 와우', '네이버플러스', 'SSG 랜더스', '11번가 아마존', '직접입력'],
+        '생산성': ['Notion', 'Evernote', 'Microsoft 365', 'Google Workspace', 'Dropbox', 'Todoist', '직접입력']
+    };
+
+    function updateSubcategoryOptions() {
+        const mainCategory = document.getElementById('mainCategory').value;
+        const subcategorySelect = document.getElementById('subcategory');
+        subcategorySelect.innerHTML = '';
+
+        subcategories[mainCategory]?.forEach(sub => {
+            const option = document.createElement('option');
+            option.value = sub;
+            option.textContent = sub;
+            subcategorySelect.appendChild(option);
+        });
+
+        updateServiceName();
+    }
+
+    function updateServiceName() {
+        const selected = document.getElementById('subcategory').value;
+        const customInputDiv = document.getElementById('customInputWrapper');
+        const serviceInput = document.getElementById('serviceInput');
+
+        if (selected === '직접입력') {
+            customInputDiv.style.display = 'block';
+            serviceInput.value = '';
+            serviceInput.readOnly = false;
+        } else {
+            customInputDiv.style.display = 'none';
+            serviceInput.value = selected;
+            serviceInput.readOnly = true;
+        }
+    }
+
+    function toggleAlarmDaysInput() {
+        const checkbox = document.getElementById("alarmEnabled");
+        const daysInputDiv = document.getElementById("alarmDaysWrapper");
+        daysInputDiv.style.display = checkbox.checked ? "block" : "none";
+    }
+
+    window.onload = function () {
+        updateSubcategoryOptions();
+        toggleAlarmDaysInput();
+    };
+</script>
+
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+</a>
+<div id="preloader"></div>
+<div th:replace="fragments/footer :: commonFooter"></div>
+</body>
+</html>

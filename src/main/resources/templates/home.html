@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: commonHead"></head>
+
+<body class="index-page">
+
+<main class="main">
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero section">
+    <div class="container d-flex flex-column justify-content-center align-items-center text-center position-relative" data-aos="zoom-out">
+      <img th:src="@{/assets/img/hero-img.svg}" class="img-fluid animated" alt="">
+      <h1>Welcome to <span>Oops</span></h1>
+      <p>똑똑하게 관리하세요!</p>
+      <div class="d-flex gap-3">
+        <a th:href="@{/users/login}" class="btn-get-started scrollto">로그인</a>
+        <a th:href="@{/users/register}" class="btn-get-started scrollto">회원가입</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+<div th:replace="fragments/footer :: commonFooter"></div>
+</body>
+</html>

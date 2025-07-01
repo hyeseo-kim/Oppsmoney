@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: commonHead"></head>
+<body class="index-page">
+
+
+<main class="main">
+    <section class="container d-flex justify-content-center align-items-center py-5" style="min-height: 80vh;">
+        <div style="width: 100%; max-width: 420px;">
+            <div class="text-center mb-4">
+                <h2>🫟OppsMoney</h2>
+<!--                <p class="text-muted">Oops 계정으로 로그인하세요</p>-->
+            </div>
+
+            <form th:action="@{/users/login}" method="post">
+                <div class="mb-3">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="이메일" required>
+                </div>
+
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required>
+                </div>
+
+                <div class="d-grid mt-3">
+                    <button type="submit" class="btn btn-block" style="background-color: #17b5b5; color: white;">로그인</button>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a th:href="@{/users/register}">아직 회원이 아니신가요? <span class="text-primary">회원가입</span></a>
+                </div>
+
+                <div th:if="${error}" class="alert alert-danger mt-3" th:text="${error}"></div>
+            </form>
+
+        </div>
+    </section>
+</main>
+
+
+<div th:replace="fragments/footer :: commonFooter"></div>
+</body>
+</html>

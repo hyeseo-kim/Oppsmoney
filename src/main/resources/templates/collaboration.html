@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: commonHead"></head>
+
+<body class="index-page">
+
+<header id="header" class="header sticky-top">
+  <div class="container-fluid d-flex justify-content-between align-items-center px-4 flex-wrap">
+    <a th:href="@{/dashboard}" class="logo d-flex align-items-center order-1 order-md-0">
+      <h1 class="sitename">Oops</h1><span>.</span>
+    </a>
+    <div class="d-flex flex-row-reverse align-items-center gap-3 order-0 order-md-1">
+      <th:block th:replace="fragments/sidebar :: sidebar"></th:block>
+      <a th:href="@{/subscriptions/register}" class="btn-getstarted">구독등록</a>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <!-- Contact Section -->
+  <section id="contact" class="contact section py-5">
+
+    <!-- Section Title -->
+    <div class="container section-title text-center mb-5" data-aos="fade-up">
+      <h2>Contact</h2>
+      <p>Oops 팀에게 협업 제안을 보내보세요. 언제든 환영합니다!</p>
+    </div>
+
+    <!-- 구글 지도 -->
+    <div class="container mb-5">
+      <iframe style="width: 100%; height: 400px;"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.515731389533!2d127.01243407574303!3d37.285055272116075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b444a16b6e7cf%3A0x17f74b9e86b76454!2z7Iug7LKt7ISxIO2ZjOybkOyLnCDsgrzshKDsm5A!5e0!3m2!1sko!2skr!4v1717829460892!5m2!1sko!2skr"
+              frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- 본문 내용 -->
+    <div class="container" data-aos="fade-up">
+      <div class="row gy-4 gx-lg-5 align-items-start">
+        <!-- 회사 소개 -->
+        <div class="col-lg-6">
+          <div class="bg-light p-4 rounded shadow-sm h-100">
+            <h4 class="mb-3">📌 회사 소개</h4>
+            <p>“Oops”는 사용자의 유료 구독을 한눈에 관리하고, 불필요한 지출을 줄일 수 있도록 돕는 서비스입니다.</p>
+
+            <div class="info-item d-flex mb-3">
+              <i class="bi bi-geo-alt me-3 text-primary"></i>
+              <div>
+                <h6 class="mb-1">Location:</h6>
+                <p class="mb-0">수원시 팔달구 행궁동</p>
+              </div>
+            </div>
+
+            <div class="info-item d-flex mb-3">
+              <i class="bi bi-envelope me-3 text-primary"></i>
+              <div>
+                <h6 class="mb-1">Email:</h6>
+                <p class="mb-0">oppsmoney.manager@gmail.com</p>
+              </div>
+            </div>
+
+            <div class="info-item d-flex">
+              <i class="bi bi-phone me-3 text-primary"></i>
+              <div>
+                <h6 class="mb-1">Call:</h6>
+                <p class="mb-0">+82 010 3311 3311</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 협업 제안 폼 -->
+        <div class="col-lg-6">
+          <div class="p-4 border rounded shadow-sm bg-white">
+            <form th:action="@{/collaboration}" method="post">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                </div>
+              </div>
+              <div class="mb-3">
+                <input type="text" name="title" class="form-control" placeholder="제안 제목" required> <!-- 🔁 수정 -->
+              </div>
+              <div class="mb-3">
+                <textarea name="content" class="form-control" rows="5" placeholder="제안 내용" required></textarea> <!-- 🔁 수정 -->
+              </div>
+
+              <!-- 메시지 출력 -->
+              <div class="my-3">
+                <div class="error-message text-danger text-center" th:if="${error}" th:text="${error}"></div>
+                <div class="sent-message text-success text-center" th:if="${message != null}" th:text="${message}"></div>
+              </div>
+
+              <div class="text-end">
+                <button type="submit" class="btn btn-block" style="background-color: #17b5b5; color: white;">Send Message</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+  <i class="bi bi-arrow-up-short"></i>
+</a>
+<div id="preloader"></div>
+<div th:replace="fragments/footer :: commonFooter"></div>
+</body>
+</html>

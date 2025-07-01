@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>내 계정</title>
+    <th:block th:insert="fragments/head :: commonHead"></th:block>
+    <style>
+        body {
+            background-color: #ffffff; /* 회색 → 흰색으로 변경 */
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 16px; /* 양 옆 여백만 주고 배경 없음 */
+            background-color: transparent; /* 카드 배경 제거 */
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-header h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #007bff;
+            text-align: left;
+            padding-top: 30px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            margin: 0;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            font-size: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #111;
+        }
+
+        .action-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .logout-btn, .delete-btn {
+            width: 100%;
+            margin-top: 14px;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+    </style>
+</head>
+
+<body class="index-page">
+<header id="header" class="header sticky-top">
+    <div class="container-fluid d-flex justify-content-between align-items-center px-4 flex-wrap">
+
+        <a th:href="@{/dashboard}" class="logo d-flex align-items-center order-1 order-md-0">
+            <h1 class="sitename">Oops</h1><span>.</span>
+        </a>
+
+        <div class="d-flex flex-row-reverse align-items-center gap-3 order-0 order-md-1">
+            <th:block th:replace="fragments/sidebar :: sidebar"></th:block>
+            <a th:href="@{/subscriptions/register}" class="btn-getstarted">구독등록</a>
+        </div>
+    </div>
+</header>
+
+<main class="main">
+    <section class="profile-container">
+        <div class="text-center mb-4">
+<!--            <h2>내 계정</h2>-->
+            <!--                <p class="text-muted">Oops 계정으로 로그인하세요</p>-->
+        </div>
+
+        <div class="section-title">가입 정보</div>
+        <div class="info-row">
+            <div class="info-label">이름</div>
+            <div class="info-value" th:text="${user.name}">홍길동</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">이메일</div>
+            <div class="info-value" th:text="${user.email}">email@example.com</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">숫자 아이디</div>
+            <div class="info-value" th:text="${user.id}">12345678</div>
+        </div>
+
+        <a th:href="@{/mypage/edit}" class="action-button" style="background-color: dodgerblue; color: white;">가입 정보 수정</a>
+
+<!--        <div class="section-title">구매 정보</div>-->
+<!--        <div class="info-row">-->
+<!--            <div class="info-label">보유 코인</div>-->
+<!--            <div class="info-value">0 코인</div>-->
+<!--        </div>-->
+<!--        <div class="info-row">-->
+<!--            <div class="info-label">구매 아이템</div>-->
+<!--            <div class="info-value">-</div>-->
+<!--        </div>-->
+
+        <!-- 🔽 기존 구매 정보 부분 대체 -->
+        <div class="section-title">구독 정보</div>
+
+        <div th:each="sub : ${subscriptions}" class="info-row">
+            <div class="info-label" th:text="${sub.service_name}">서비스명</div>
+            <div class="info-value">
+                <span th:text="${sub.amount}">9900</span>원
+            </div>
+        </div>
+
+        <a th:href="@{/subscriptions/manage}" class="action-button" style="background-color: dodgerblue; color: white;">구독 내역 수정</a>
+
+
+        <div class="section-title">활동</div>
+        <div class="info-row">
+            <div class="info-label">총 구독 수</div>
+            <div class="info-value" th:text="${subscriptionCount}">구독수</div>
+        </div>
+        <div class="info-row">
+            <div class="info-label">총 구독 금액</div>
+            <div class="info-value" th:text="${totalAmount}">총 구독 금액</div>
+        </div>
+<!--        <div class="info-row">-->
+<!--            <ul>-->
+<!--                <li th:each="entry : ${categoryTotals}">-->
+<!--                    <span th:text="${entry.key}">카테고리</span>:-->
+<!--                    <span th:text="${entry.value}">0</span>원-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+        <!-- 로그아웃 버튼 (POST 요청) -->
+        <form th:action="@{/users/logout}" method="post">
+            <button type="submit" class="logout-btn">로그아웃</button>
+        </form>
+        <button type="button" class="delete-btn" onclick="openModal()">계정 삭제</button>
+
+        <div id="deleteModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);">
+            <div style="background:white; max-width:400px; margin:150px auto; padding:20px; border-radius:8px; text-align:center;">
+                <h3>비밀번호 확인</h3>
+                <p>계정을 삭제하려면 비밀번호를 입력하세요.</p>
+                <form id="deleteForm" th:action="@{/users/delete}" method="post">
+                    <input type="password" name="password" placeholder="비밀번호" required style="width:100%; padding:8px;">
+                    <div style="margin-top:16px;">
+                        <button type="submit" style="background-color:#dc3545; color:white; padding:10px 20px; border:none; border-radius:4px;">삭제</button>
+                        <button type="button" onclick="closeModal()" style="margin-left:10px; padding:10px 20px;">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let successMessage = /*[[${successMessage}]]*/ null;
+        let errorMessage = /*[[${errorMessage}]]*/ null;
+
+        if (successMessage !== null && successMessage !== '') {
+            alert(successMessage);
+        }
+
+        if (errorMessage !== null && errorMessage !== '') {
+            alert(errorMessage);
+        }
+        /*]]>*/
+    </script>
+
+</main>
+
+<script>
+    function openModal() {
+        document.getElementById("deleteModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("deleteModal").style.display = "none";
+    }
+</script>
+
+<div th:replace="fragments/footer :: commonFooter"></div>
+
+
+</body>
+</html>

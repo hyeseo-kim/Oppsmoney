@@ -1,0 +1,107 @@
+<!-- templates/fragments/sidebar.html -->
+<div th:fragment="sidebar">
+
+  <!-- 햄버거 아이콘 -->
+  <div class="menu-toggle" onclick="openNav()">☰</div>
+
+  <!-- 사이드 네비게이션 메뉴 -->
+  <div id="sideNav" class="side-nav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+
+    <div class="profile-box">
+      <img src="/assets/img/profileimg.png" alt="프로필" class="profile-img">
+      <div class="nickname" th:text="${session.userNickname}">기매서</div>
+      <div class="email" th:text="${session.userEmail}">example@email.com</div>
+    </div>
+
+    <a th:href="@{/dashboard}">🏠 Home</a>
+    <a th:href="@{/notifications}">🔔 알림보기</a>
+    <a th:href="@{/mypage}">👤 마이페이지</a>
+    <a th:href="@{/users/support}">❓ 고객지원</a>
+    <a th:href="@{/collaboration}">🤝 협업제안</a>
+<!--    <a th:href="@{/settings}">⚙️ 환경설정</a>-->
+  </div>
+
+  <!-- ✅ 스타일 -->
+  <style>
+    .menu-toggle {
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .side-nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 0;
+      z-index: 1050;
+      background-color: white;
+      overflow-x: hidden;
+      transition: width 0.3s ease;
+      padding-top: 70px;
+      box-shadow: -3px 0 12px rgba(0, 0, 0, 0.25);
+    }
+
+    body.sidebar-open .side-nav {
+      width: 320px;
+    }
+
+    .side-nav a {
+      padding: 16px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #333;
+      display: block;
+      transition: 0.2s;
+    }
+
+    .side-nav a:hover {
+      background-color: #f1f1f1;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 15px;
+      right: 30px;
+      font-size: 40px;
+      color: #999;
+    }
+
+    .profile-box {
+      text-align: center;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 30px;
+    }
+
+    .profile-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .nickname {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .email {
+      font-size: 15px;
+      color: #666;
+    }
+  </style>
+
+  <!-- ✅ 사이드바 열고 닫는 스크립트 -->
+  <script>
+    function openNav() {
+      document.body.classList.add("sidebar-open");
+    }
+
+    function closeNav() {
+      document.body.classList.remove("sidebar-open");
+    }
+  </script>
+</div>
