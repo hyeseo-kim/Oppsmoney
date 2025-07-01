@@ -111,12 +111,13 @@ spring.datasource.url=jdbc:mysql://localhost:3306/subscription_db?serverTimezone
 spring.datasource.username=root
 spring.datasource.password=12345678
 spring.jpa.hibernate.ddl-auto=update
+```
 
 ### 2. Gradle 빌드 및 서버 실행
 
 ```bash
 ./gradlew bootRun
-
+```
 
 ## 3. 브라우저에서 접속
 http://localhost:8080
@@ -125,19 +126,19 @@ http://localhost:8080
 
 ## 🔐 테스트 계정
 
-* 사용자
+- ***사용자***
 ID : hyeseo0614@gmail.com / PW : Kimhyeseo06!
 
-* 관리자
+- ***관리자***
 ID : oppsmoney.manager@gmail.com / PW : Qwer123!@#
 
 ---
 
 ## 개발자 정보
 
-* 김혜서
-* GitHub : @hyeseo-kim
-* Email : hyeseo0614@gmail.com
+- 김혜서
+- GitHub : [@hyeseo-kim] (https://github.com/hyeseo-kim)
+- Email : hyeseo0614@gmail.com
 
 
 ---
