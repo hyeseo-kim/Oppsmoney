@@ -66,6 +66,7 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 
 ## 프로젝트 폴더 구조
 
+````
 subscribe/
 ├─ src/main/java/com/example/subscribe/
 │ ├─ controller/ # 웹 요청 처리
@@ -97,7 +98,7 @@ subscribe/
 │
 ├─ build.gradle
 └─ README.md
-
+````
 
 ---
 
@@ -134,7 +135,7 @@ ID : oppsmoney.manager@gmail.com / PW : Qwer123!@#
 
 ---
 
-## 개발자 정보
+## 👨‍💻개발자 정보
 
 - 김혜서
 - GitHub : [@hyeseo-kim] (https://github.com/hyeseo-kim)
