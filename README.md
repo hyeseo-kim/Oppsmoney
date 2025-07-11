@@ -65,6 +65,7 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 <p align="center">
   <img src="docs/images/flowchart.png" alt="유료 구독 사용자 흐름도" width="600"/>
 </p>
+
 ---
 
 ## 🖼️ 주요 화면 구성
