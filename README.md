@@ -6,6 +6,21 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 
 ---
 
+## 🛠️ 기술 스택
+
+|         영역        |                                                    |
+|--------------------|----------------------------------------------------|
+|      Language      |  Java 17                                           |
+|      Framework     |  Spring Boot 3x, Spring MVC, Spring Data JPA       |
+|       View         |  Thymeleaf, Bootstrap 5                            |
+|       DB           |  MySQL 8.x                                         |
+|       ORM          |  Hibernate (JPA 기반)                               |
+|      Build Tool    |  Gradle                                            |
+|       기타          |  Lombok, JSTL, Spring Scheduler                    |
+
+
+---
+
 ## 💡 주요 기능
 
 ### 👤 회원 기능
@@ -47,8 +62,9 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
                                          
 ### 🧭 유료 구독 사용자 흐름도
 
-<img src="docs/images/flowchart.png" alt="유료 구독 사용자 흐름도" width="600"/>
-
+<p align="center">
+  <img src="docs/images/flowchart.png" alt="유료 구독 사용자 흐름도" width="600"/>
+</p>
 ---
 
 ## 🖼️ 주요 화면 구성
@@ -96,21 +112,6 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 가입 통계, 미응답 질문 처리, 협업 제안 확인 등 기능 통합
 
 <img src="docs/images/admin_combined.png" width="800"/>
-
----
-
-## 🛠️ 기술 스택
-
-|         영역        |                                                    |
-|--------------------|----------------------------------------------------|
-|      Language      |  Java 17                                           |
-|      Framework     |  Spring Boot 3x, Spring MVC, Spring Data JPA       |
-|       View         |  Thymeleaf, Bootstrap 5                            |
-|       DB           |  MySQL 8.x                                         |
-|       ORM          |  Hibernate (JPA 기반)                               |
-|      Build Tool    |  Gradle                                            |
-|       기타          |  Lombok, JSTL, Spring Scheduler                    |
-
 
 ---
 
@@ -205,3 +206,10 @@ http://localhost:8080
 - 다중 알림 처리 -> JS에서 체크박스로 선택 후 `/read-many`, `/delete-many` 구현
 
 ---
+
+## 📘 프로젝트 회고 및 배운 점
+
+- Spring Scheduler를 이용한 예약 알림 기능을 구현하며 비동기 처리 및 리소스 최적화에 대해 고민함
+- JavaScript 체크박스 UI를 통한 다중 알림 읽음/삭제 처리 구현
+- Thymeleaf 기반으로 사용자 친화적이고 일관된 UI 구성 경험
+- 실사용을 고려한 트러블 슈팅을 통해 백엔드 시스템 안정성을 고려하는 역량 향상
