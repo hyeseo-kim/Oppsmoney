@@ -53,11 +53,11 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 ### 로그인 / 회원가입 페이지
 <img src="docs/images/login_register_combined.png" width="800"/>
 
-### 대시보드 (구독 목록 + 통계 카드 + 알림 표시)
-<img src="docs/images/dashboard.png" width="800"/>
+### 대시보드 & 구독 등록 화면
+- 좌측: 이번 달 총 구독 금액, 구독 목록, 통계 카드, 알림 표시
+- 우측: 카테고리/서비스명/결제일/금액/알림 설정 등 구독 등록 폼
 
-### 구독 등록 폼 (카테고리, 금액, 주기, 메모 입력)
-<img src="docs/images/subscription-register.png" width="800"/>
+<img src="docs/images/dashboard_subscription_combined.png" width="800"/>
 
 ### 알림 페이지 (체크박스로 읽음/삭제 다중 선택 기능)
 <img src="docs/images/notification-list.png" width="800"/>
