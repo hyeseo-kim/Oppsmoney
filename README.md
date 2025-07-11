@@ -50,31 +50,49 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 
 ## 🖼️ 주요 화면 구성
 
-### 로그인 / 회원가입 페이지
+---
+
+### 🔐 로그인 / 회원가입 페이지
 <img src="docs/images/login_register_combined.png" width="800"/>
 
-### 대시보드 & 구독 등록 화면
-- 좌측: 이번 달 총 구독 금액, 구독 목록, 통계 카드, 알림 표시
-- 우측: 카테고리/서비스명/결제일/금액/알림 설정 등 구독 등록 폼
+---
+
+### 📊 대시보드 & 구독 등록
+**좌측:** 이번 달 총 구독 금액, 구독 목록, 통계 카드, 알림 표시  
+**우측:** 카테고리/서비스명/결제일/금액/알림 설정 등 구독 등록 폼
 
 <img src="docs/images/dashboard_subscription_combined.png" width="800"/>
 
-### 알림 페이지 (체크박스로 읽음/삭제 다중 선택 기능)
-<img src="docs/images/notification-list.png" width="800"/>
+---
 
-### 마이페이지 (회원정보 수정, 구독 수정, 계정 삭제)
-<img src="docs/images/mypage.png" width="800"/>
+### 🔔 알림 목록 & 👤 마이페이지
+**좌측:** 알림 읽음/삭제, 체크박스 다중 선택  
+**우측:** 회원 정보, 구독 내역, 통계, 계정 삭제
 
-### Q&A 게시판 (사용자 Q -> 관리자 A)
-<img src="docs/images/support.png" width="800"/>
+<img src="docs/images/notification_mypage_combined.png" width="800"/>
 
-### 협업 제안 폼
-<img src="docs/images/collaboration.png" width="800"/>
+---
 
-### 관리자 대시보드
-<img src="docs/images/admin-unanswered.png" width="800"/>
-<img src="docs/images/admin-proposal-list.png" width="800"/>
-<img src="docs/images/admin-dashboard.png" width="800"/>
+### ❓ Q&A 게시판 (사용자 → 관리자)
+**좌측:** 질문 작성 및 확인  
+**우측:** 미응답 질문 목록 및 관리자 답변 입력
+
+<img src="docs/images/support_combined.png" width="800"/>
+
+---
+
+### 🤝 협업 제안 & 수신 메일
+**좌측:** 제안 내용 확인  
+**우측:** 수신된 메일 형태
+
+<img src="docs/images/collaboration_combined.png" width="800"/>
+
+---
+
+### 🛠️ 관리자 기능 통합
+가입 통계, 미응답 질문 처리, 협업 제안 확인 등 기능 통합
+
+<img src="docs/images/admin_combined.png" width="800"/>
 
 ---
 
