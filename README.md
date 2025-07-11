@@ -75,9 +75,9 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 
 ### ❓ Q&A 게시판 (사용자 → 관리자)
 **좌측:** 질문 작성 및 확인  
-**우측:** 미응답 질문 및 답변 입력
+**우측:** 미응답 질문 목록 및 관리자 답변 입력
 
-<img src="docs/images/support.png" width="800"/>
+<img src="docs/images/support_combined.png" width="800"/>
 
 ---
 
@@ -85,7 +85,7 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 **좌측:** 제안 내용 확인  
 **우측:** 수신된 메일 형태
 
-<img src="docs/images/collaboration.png" width="800"/>
+<img src="docs/images/collaboration_combined.png" width="800"/>
 
 ---
 
