@@ -51,8 +51,7 @@ Spring Boot 기반의 **유료 구독 알림 시스템** 입니다.
 ## 🖼️ 주요 화면 구성
 
 ### 로그인 / 회원가입 페이지
-<img src="docs/images/login.png" width="800"/>
-<img src="docs/images/register.png" width="800"/>
+<img src="docs/images/login_register_combined.png" width="800"/>
 
 ### 대시보드 (구독 목록 + 통계 카드 + 알림 표시)
 <img src="docs/images/dashboard.png" width="800"/>
